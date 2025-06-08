@@ -1,0 +1,32 @@
+body {
+    background-color: #add8e6; /* Light blue background */
+    font-family: "Comic Sans MS", cursive, sans-serif; /* Comic Sans font */
+    font-size: 24px; /* Large font size */
+    color: #000080; /* Navy blue text color */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #00008b; /* Dark blue for headings */
+}
+
+a {
+    color: #1e90ff; /* Dodger blue for links */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #4169e1; /* Royal blue on hover */
+}
+
+button {
+    background-color: #4682b4; /* Steel blue for buttons */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5f9ea0; /* Cadet blue on hover */
+}
