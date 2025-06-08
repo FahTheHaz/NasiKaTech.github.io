@@ -20,7 +20,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
     })
     .catch(err => {
         console.error("Camera error:", err);
-        alert("Unable to access the camera. Please check permissions and HTTPS.");
+        alert(`Unable to access the camera. Error: ${err.message}`);
     });
 
 // Function to stop the camera stream
@@ -67,29 +67,34 @@ async function detectObjects(video) {
         }
     } catch (err) {
         console.error("Error detecting objects:", err);
-        alert("Object detection failed. Please check your Azure configuration.");
+        alert(`Object detection failed. Error: ${err.message}`);
     }
 }
 
 // 3. Audio Alerts with Azure Speech
 async function playAudioWarning(text) {
-    const response = await fetch(`https://${speechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
-        method: "POST",
-        headers: {
-            "Ocp-Apim-Subscription-Key": speechKey,
-            "Content-Type": "application/ssml+xml"
-        },
-        body: `
-            <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
-                <voice name="en-US-JennyNeural">${text}</voice>
-            </speak>
-        `
-    });
+    try {
+        const response = await fetch(`https://${speechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+            method: "POST",
+            headers: {
+                "Ocp-Apim-Subscription-Key": speechKey,
+                "Content-Type": "application/ssml+xml"
+            },
+            body: `
+                <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+                    <voice name="en-US-JennyNeural">${text}</voice>
+                </speak>
+            `
+        });
 
-    const audioBlob = await response.blob();
-    const audioUrl = URL.createObjectURL(audioBlob);
-    const audio = new Audio(audioUrl);
-    audio.play();
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+    } catch (err) {
+        console.error("Error generating speech:", err);
+        alert(`Speech generation failed. Error: ${err.message}`);
+    }
 }
 
 // Button to trigger speech manually
