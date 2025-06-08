@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AR Cane</title>
+    <title>Nasi Katech's AR Cane</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <!-- <script>
         // Simple Hello World prompt for testing
@@ -10,8 +10,58 @@
             alert("Hello World! The website is working.");
         };
     </script> -->
+    <!-- hello world -->
     <link rel="stylesheet" href="style.css">
-    <style> 
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298); /* Blue hue gradient */
+            color: white;
+        }
+        #cameraView {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+        }
+        #result {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        #speakButton {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px; /* Island button style */
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        #speakButton:hover {
+            background: #0056b3;
+        }
+        header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+    </style> <style> 
         body { margin: 0; overflow: hidden; }
         #cameraView { width: 100%; height: 100vh; object-fit: cover; }
         #result { position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.7); padding: 10px; }

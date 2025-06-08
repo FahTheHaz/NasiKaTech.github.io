@@ -16,7 +16,18 @@ navigator.mediaDevices.getUserMedia({ video: true })
         setInterval(() => detectObjects(cameraView), 3000); // Scan every 3 seconds
     })
     .catch(err => console.error("Camera error:", err));
+    // Function to stop the camera stream
+    function stopCamera() {
+        const stream = cameraView.srcObject;
+        if (stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            cameraView.srcObject = null;
+        }
+    }
 
+    // Add event listener to stop the camera when the page is unloaded
+    window.addEventListener("beforeunload", stopCamera);
 // 2. Detect Obstacles with Azure Computer Vision
 async function detectObjects(video) {
     const canvas = document.createElement("canvas");
