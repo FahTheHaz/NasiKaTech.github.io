@@ -9,7 +9,7 @@ const cameraView = document.getElementById("cameraView");
 const resultDiv = document.getElementById("result");
 const speakButton = document.getElementById("speakButton");
 
-// 1. Access iPhone Camera
+// 1. Access Camera (Mobile and Desktop)
 navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
         console.log("Camera stream accessed successfully.");
