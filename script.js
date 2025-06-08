@@ -36,23 +36,30 @@ async function detectObjects(video) {
     canvas.getContext("2d").drawImage(video, 0, 0);
     const imageData = canvas.toDataURL("image/jpeg").split(",")[1];
 
-    const response = await fetch(`${visionEndpoint}/vision/v3.0/detect`, {
-        // const response = await fetch(`${southeastasia}/vision/v3.0/detect`, {
-        // 
-        method: "POST",
-        headers: {
-            "Ocp-Apim-Subscription-Key": visionKey,
-            "Content-Type": "application/octet-stream"
-        },
-        body: atob(imageData)
-    });
+    try {
+        const response = await fetch(`${visionEndpoint}/vision/v3.0/detect`, {
+            method: "POST",
+            headers: {
+                "Ocp-Apim-Subscription-Key": visionKey,
+                "Content-Type": "application/octet-stream"
+            },
+            body: new Blob([Uint8Array.from(atob(imageData), c => c.charCodeAt(0))], { type: "application/octet-stream" })
+        });
 
-    const data = await response.json();
-    const obstacles = data.objects?.filter(obj => obj.confidence > 0.7 && (obj.object === "person" || obj.object === "tree"));
-    if (obstacles?.length > 0) {
-        const warningMessage = `Warning: ${obstacles[0].object} ahead!`;
-        resultDiv.textContent = warningMessage;
-        playAudioWarning(warningMessage);
+        const data = await response.json();
+        console.log("Azure response:", data);
+
+        const obstacles = data.objects?.filter(obj => obj.confidence > 0.7 && (obj.object === "person" || obj.object === "tree"));
+        if (obstacles?.length > 0) {
+            const warningMessage = `Warning: ${obstacles[0].object} ahead!`;
+            resultDiv.textContent = warningMessage;
+            playAudioWarning(warningMessage);
+        } else {
+            resultDiv.textContent = "No obstacles detected.";
+        }
+    } catch (err) {
+        console.error("Error detecting objects:", err);
+        alert("Object detection failed. Please check your Azure configuration.");
     }
 }
 
