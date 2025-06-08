@@ -12,22 +12,30 @@ const speakButton = document.getElementById("speakButton");
 // 1. Access iPhone Camera
 navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
+        console.log("Camera stream accessed successfully.");
         cameraView.srcObject = stream;
-        setInterval(() => detectObjects(cameraView), 3000); // Scan every 3 seconds
-    })
-    .catch(err => console.error("Camera error:", err));
-    // Function to stop the camera stream
-    function stopCamera() {
-        const stream = cameraView.srcObject;
-        if (stream) {
-            const tracks = stream.getTracks();
-            tracks.forEach(track => track.stop());
-            cameraView.srcObject = null;
-        }
-    }
 
-    // Add event listener to stop the camera when the page is unloaded
-    window.addEventListener("beforeunload", stopCamera);
+        // Camera test: Display a message to confirm the camera is working
+        resultDiv.textContent = "Camera is working. Point it at obstacles to test detection.";
+    })
+    .catch(err => {
+        console.error("Camera error:", err);
+        alert("Unable to access the camera. Please check permissions and HTTPS.");
+    });
+
+// Function to stop the camera stream
+function stopCamera() {
+    const stream = cameraView.srcObject;
+    if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        cameraView.srcObject = null;
+    }
+}
+
+// Add event listener to stop the camera when the page is unloaded
+window.addEventListener("beforeunload", stopCamera);
+
 // 2. Detect Obstacles with Azure Computer Vision
 async function detectObjects(video) {
     const canvas = document.createElement("canvas");
